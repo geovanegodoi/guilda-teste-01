@@ -39,12 +39,12 @@ jobs:
       - name: Cache Restore
         uses: actions/cache@v2
         with:
-          path: ~/cache-restore
+          path: ~/ClassLibrary/bin/Release
           key: ${{ github.sha }}   
         
       - name: Where Am I
         shell: cmd
         run: |
           ls -la
-          ls ~/cache-restore
-          cd ~/cache-restore
+          ls ~/ClassLibrary/bin/Release
+          cd ~/ClassLibrary/bin/Release
