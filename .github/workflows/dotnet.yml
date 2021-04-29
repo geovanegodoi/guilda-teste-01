@@ -25,10 +25,16 @@ jobs:
     - name: Build
       run: dotnet build --no-restore  --configuration Release --verbosity minimal
       
-    - name: Cache modules
+    - name: Cache Store
       uses: actions/cache@v2
       with:
         path: ~/ClassLibrary/bin/Release
+        key: ${{ github.sha }}
+
+    - name: Cache Restore
+      uses: actions/cache@v2
+      with:
+        path: cache-restore
         key: ${{ github.sha }}
         
   publish:
@@ -36,7 +42,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Cache modules
+      - name: Cache Restore
         uses: actions/cache@v2
         with:
           path: cache-restore
@@ -44,4 +50,4 @@ jobs:
         
       - name: Where Am I
         shell: cmd
-        run: tree /f
+        run: ls -la
