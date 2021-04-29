@@ -44,7 +44,7 @@ namespace XUnitTestProject
         * Maintainability                  | Bad  |
         * ------------------------------------------
         */
-        [Fact]
+        [Fact(Skip = "Não executar")]
         public void Teste_2_utilizando_mocks_para_depencias_externas()
         {
             // Arrange
