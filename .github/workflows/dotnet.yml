@@ -7,28 +7,10 @@ on:
     branches: [ main ]
 
 jobs:
-  job-01:
+  build:
 
     runs-on: windows-latest
 
-    steps:      
-    - name: Where Am I
-      shell: cmd
-      run: tree /f
-  
-  job-02:
-    runs-on: windows-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Where Am I
-      shell: cmd
-      run: tree /f
-
-  job-03:
-    runs-on: windows-latest
-    
     steps:
     - uses: actions/checkout@v2
     
@@ -41,26 +23,40 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --no-restore  --configuration Release
-    - name: Where Am I
-      shell: cmd
-      run: tree /f
-      
-  job-04:
-
+      run: dotnet build --no-restore  --configuration Release --verbosity minimal
+        
+  test:
+    needs: build
     runs-on: windows-latest
 
-    steps:      
-    - name: Where Am I
-      shell: cmd
-      run: tree /f
-  
-  job-05:
-    runs-on: windows-latest
-    
     steps:
     - uses: actions/checkout@v2
     
-    - name: Where Am I
-      shell: cmd
-      run: tree /f
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.x
+    
+    - name: Test
+      run: dotnet test --configuration Release --verbosity minimal
+    
+    - name: Cache modules
+      uses: actions/cache@v2
+      with:
+        path: ClassLibrary\bin\Release\netcoreapp3.1
+        key: ${{ github.sha }}      
+
+  publish:
+    needs: test
+    runs-on: windows-latest
+
+    steps:
+      - name: Cache modules
+        uses: actions/cache@v2
+        with:
+          path: cache-restore
+          key: ${{ github.sha }}   
+        
+      - name: Where Am I
+        shell: cmd
+        run: tree /f
