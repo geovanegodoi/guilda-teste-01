@@ -24,30 +24,15 @@ jobs:
       
     - name: Build
       run: dotnet build --no-restore  --configuration Release --verbosity minimal
-        
-  test:
-    needs: build
-    runs-on: windows-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.x
-    
-    - name: Test
-      run: dotnet test --configuration Release --verbosity minimal
-    
+      
     - name: Cache modules
       uses: actions/cache@v2
       with:
-        path: ClassLibrary\bin\Release\netcoreapp3.1
-        key: ${{ github.sha }}      
-
+        path: ~/ClassLibrary/bin/Release
+        key: ${{ github.sha }}
+        
   publish:
-    needs: test
+    needs: build
     runs-on: windows-latest
 
     steps:
