@@ -20,7 +20,7 @@ namespace XUnitTestProject
         * Maintainability                  | Bad  |
         * ------------------------------------------
         */
-        [Fact]
+        [Fact(Skip = "Nao executar")]
         public void Teste_1_nao_utilizando_test_doubles()
         {            
             // Arrange
