@@ -25,16 +25,10 @@ jobs:
     - name: Build
       run: dotnet build --no-restore  --configuration Release --verbosity minimal
       
-    - name: Cache Store
+    - name: Cache Upload
       uses: actions/cache@v2
       with:
         path: ~/ClassLibrary/bin/Release
-        key: ${{ github.sha }}
-
-    - name: Cache Restore
-      uses: actions/cache@v2
-      with:
-        path: cache-restore
         key: ${{ github.sha }}
         
   publish:
@@ -45,9 +39,12 @@ jobs:
       - name: Cache Restore
         uses: actions/cache@v2
         with:
-          path: cache-restore
+          path: ~/cache-restore
           key: ${{ github.sha }}   
         
       - name: Where Am I
         shell: cmd
-        run: ls -la
+        run: |
+          ls -la
+          ls ~/cache-restore
+          cd ~/cache-restore
